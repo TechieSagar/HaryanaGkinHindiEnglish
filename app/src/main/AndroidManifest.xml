@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -15,33 +16,24 @@
             android:name=".activities.PracticeSetsActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.BookmarkActivity"
-            android:screenOrientation="fullSensor" />
+            android:name=".activities.BookmarkActivity" />
         <activity
-            android:name=".activities.ScoreActivity"
-            android:screenOrientation="fullSensor" />
+            android:name=".activities.ScoreActivity" />
         <activity
-            android:name=".activities.QuestionsActivity"
-            android:screenOrientation="fullSensor" />
+            android:name=".activities.QuestionsActivity" />
         <activity
-            android:name=".activities.SetsActivity"
-            android:screenOrientation="fullSensor" />
+            android:name=".activities.SetsActivity" />
         <activity
-            android:name=".activities.CategoryActivity"
-            android:screenOrientation="fullSensor" />
+            android:name=".activities.CategoryActivity" />
         <activity
-            android:name=".activities.MainActivity"
-            android:screenOrientation="fullSensor" />
+            android:name=".activities.MainActivity" />
         <activity
-            android:name=".activities.RegisterActivity"
-            android:screenOrientation="fullSensor" />
+            android:name=".activities.RegisterActivity" />
         <activity
-            android:name=".activities.LanguageActivity"
-            android:screenOrientation="fullSensor" />
+            android:name=".activities.LanguageActivity" />
         <activity
             android:name=".activities.SplashActivity"
             android:exported="true"
-            android:screenOrientation="fullSensor"
             android:theme="@style/Theme.App.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,6 +45,13 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />
+
+        <property
+            android:name="android.adservices.AD_SERVICES_CONFIG"
+            android:resource="@xml/gma_ad_services_config"
+            tools:replace="android:resource" />
+
+
     </application>
 
 </manifest>
