@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="10dp"
+    android:background="@color/eightPercent"
+    tools:ignore="Overdraw">
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:contentDescription="@null"
+        android:background="@drawable/ic_person"
+        android:backgroundTint="@color/colorWhite"/>
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="@string/app_name"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="@string/about_data"/>
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/btn_pp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_privacy_policy"
+        android:textAllCaps="false"
+        android:layout_marginEnd="2dp"
+        android:textColor="@color/colorWhite"
+        android:backgroundTint="@color/buttonBorder"
+        tools:ignore="ButtonStyle" />
+
+
+     <Button
+         android:id="@+id/btn_exit"
+         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/action_exit"
+        android:textAllCaps="false"
+        android:layout_marginStart="2dp"
+        android:textColor="@color/colorWhite"
+        android:backgroundTint="@color/buttonBorder"
+         tools:ignore="ButtonStyle" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "622490624729",
+    "firebase_url": "https://haryana-gk-in-hindi-english.firebaseio.com",
+    "project_id": "haryana-gk-in-hindi-english",
+    "storage_bucket": "haryana-gk-in-hindi-english.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:622490624729:android:bb8ef8ddcae53acc5594c8",
+        "android_client_info": {
+          "package_name": "com.techietech.haryanagkinhindienglish"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "622490624729-rd1648s62g2onfak5ua5e0j8ugbgeikt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techietech.haryanagkinhindienglish",
+            "certificate_hash": "4ee9269a89da06f79c335f3df94bb80fb53a49ee"
+          }
+        },
+        {
+          "client_id": "622490624729-qbtub2o9jotasd4rdgpks0vtp9ku6orc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPzZZn8kWQ_5V-gKfe8WBnCyRWlGBo1eI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "622490624729-qbtub2o9jotasd4rdgpks0vtp9ku6orc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

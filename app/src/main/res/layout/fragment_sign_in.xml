@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignInFragment">
+
+    <include
+        layout="@layout/background_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@mipmap/haryana_map" />
+
+        <TextView
+            android:id="@+id/textView_haryana_quiz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/forte"
+            android:text="@string/haryana_gk_quiz"
+            android:textColor="@color/colorHaryanaGk"
+            android:textSize="40sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+        <EditText
+            android:id="@+id/editText_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="40dp"
+            android:backgroundTint="@color/colorHaryanvi"
+            android:ems="10"
+            android:hint="@string/e_mail"
+            android:importantForAutofill="no"
+
+            android:inputType="textEmailAddress"
+            android:textColor="@color/colorHaryanaGk"
+            android:textColorHint="@color/buttonBorder"
+            android:textColorLink="@color/colorDontHaveAccount"
+            android:textCursorDrawable="@drawable/color_cursor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_haryana_quiz" />
+
+        <EditText
+            android:id="@+id/editText_password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/colorHaryanvi"
+            android:ems="10"
+            android:hint="@string/password"
+            android:importantForAutofill="no"
+            android:includeFontPadding="false"
+            android:inputType="textPassword"
+            android:textColor="@color/colorHaryanaGk"
+            android:textColorHint="@color/buttonBorder"
+            android:textColorLink="@color/colorDontHaveAccount"
+            android:textCursorDrawable="@drawable/color_cursor"
+            app:layout_constraintEnd_toEndOf="@+id/editText_email"
+            app:layout_constraintStart_toStartOf="@+id/editText_email"
+            app:layout_constraintTop_toBottomOf="@+id/editText_email" />
+
+        <TextView
+            android:id="@+id/tv_forgot_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/modernnotwenty"
+            android:text="@string/forgot_password"
+            android:textColor="@color/colorHaryanvi"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@+id/editText_password"
+            app:layout_constraintTop_toBottomOf="@+id/editText_password" />
+
+        <TextView
+            android:id="@+id/textView_dont_haveAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/modernnotwenty"
+            android:text="@string/dont_haa"
+            android:textColor="@color/colorDontHaveAccount"
+            app:layout_constraintEnd_toEndOf="@+id/editText_password"
+            app:layout_constraintTop_toBottomOf="@+id/editText_password" />
+
+        <Button
+            android:id="@+id/button_login"
+            android:layout_width="124dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/button_transparent"
+            android:text="@string/login"
+            android:enabled="false"
+            android:textColor="@color/buttonBorder"
+            app:layout_constraintStart_toStartOf="@+id/editText_password"
+            app:layout_constraintTop_toBottomOf="@+id/tv_forgot_password" />
+
+        <TextView
+            android:id="@+id/textView_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:text="@string/skip"
+            android:textColor="@color/colorHaryanaGk"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ProgressBar
+            android:id="@+id/progressBar_signin"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="32dp"
+            android:indeterminateTint="@color/colorWhite"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/button_login"
+            app:layout_constraintTop_toBottomOf="@+id/tv_forgot_password" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</RelativeLayout>

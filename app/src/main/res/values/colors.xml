@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#001685</color>
+    <color name="colorPrimaryDark">#221463</color>
+    <color name="colorAccent">#74F362</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+
+    <color name="colorEnglish">#E4A0A0</color>
+    <color name="colorHaryanvi">#CCF1C4</color>
+    <color name="colorHindi">#9A9DF0</color>
+    <color name="colorLoginButton">#DDAD6B</color>
+    <color name="colorHaryanaGk">#D2923A</color>
+    <color name="colorForgotPassword">#F5A67F</color>
+    <color name="colorDontHaveAccount">#CCF1C4</color>
+    <color name="coloraccent">#D81B60</color>
+    <color name="buttonBorder">#5A5088</color>
+    <color name="colorRed">#D81B60</color>
+    <color name="colorBlueTransparent">#5F6191</color>
+    <color name="colorSets">#60FFFFFF</color>
+    <color name="colorSkyBlue">#3FD2EC</color>
+    <color name="hundredPercent">#00000000</color>
+    <color name="eightPercent">#20000000</color>
+    <color name="seventyPercent">#30000000</color>
+    <color name="fiftyPercent">#50000000</color>
+    <color name="twentyPercent">#80000000</color>
+    <color name="nativeAd">#fff</color>
+
+
+
+    #CCF1C4
+
+
+
+</resources>

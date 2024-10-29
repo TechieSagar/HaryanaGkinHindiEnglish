@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/category_bg"
+    android:gravity="center_vertical"
+    android:padding="10dp"
+    android:layout_marginBottom="10dp">
+
+
+    <LinearLayout
+        android:id="@+id/layout_afterFbLogo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/layout_icDelete"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/question_bItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/question"
+            android:textColor="#607D8B"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/answer_bItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/ans"
+            android:textColor="#00695C" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_icDelete"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="15dp">
+
+        <ImageButton
+            android:id="@+id/btn_deleteBI"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ic_delete"
+            android:backgroundTint="@color/colorRed"
+            android:contentDescription="@null"/>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>
