@@ -1,4 +1,4 @@
-package com.google.ads.rewardedinterstitialexample;
+package com.techietech.haryanagkinhindienglish.activities.ads;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,7 @@ import com.google.android.ump.ConsentInformation.PrivacyOptionsRequirementStatus
 import com.google.android.ump.ConsentRequestParameters;
 import com.google.android.ump.FormError;
 import com.google.android.ump.UserMessagingPlatform;
+import com.techietech.haryanagkinhindienglish.activities.QuestionsActivity;
 
 /**
  * The Google Mobile Ads SDK provides the User Messaging Platform (Google's IAB Certified consent
@@ -59,8 +60,8 @@ public class GoogleMobileAdsConsentManager {
     // For testing purposes, you can force a DebugGeography of EEA or NOT_EEA.
     ConsentDebugSettings debugSettings =
         new ConsentDebugSettings.Builder(activity)
-            // .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
-            .addTestDeviceHashedId(MainActivity.TEST_DEVICE_HASHED_ID)
+            .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
+            .addTestDeviceHashedId(QuestionsActivity.TEST_DEVICE_HASHED_ID)
             .build();
 
     ConsentRequestParameters params =

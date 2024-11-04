@@ -29,11 +29,14 @@ import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,13 +45,18 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.techietech.haryanagkinhindienglish.R;
+import com.techietech.haryanagkinhindienglish.activities.ads.GoogleMobileAdsConsentManager;
 import com.techietech.haryanagkinhindienglish.activities.ads.adsData;
 import com.techietech.haryanagkinhindienglish.models.QuestionModel;
 import java.lang.reflect.Type;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
@@ -60,6 +68,16 @@ public class QuestionsActivity extends AppCompatActivity {
     public static final String KEY_NAME = "QUESTION";
     public static final String Points_DATA = "StorePoints";
     public static final String TEXT = "text";
+
+    public static final String TEST_DEVICE_HASHED_ID = "ABCDEF012345";
+    private static final String AD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917";
+    private final AtomicBoolean isMobileAdsInitializeCalled = new AtomicBoolean(false);
+    private static final long COUNTER_TIME = 10;
+    private static final int GAME_OVER_REWARD = 1;
+    private static final String TAG = "QuestionsActivity";
+    private GoogleMobileAdsConsentManager googleMobileAdsConsentManager;
+    private RewardedInterstitialAd rewardedInterstitialAd;
+    boolean isLoading;
 
 
     private TextView questions;
@@ -88,11 +106,11 @@ public class QuestionsActivity extends AppCompatActivity {
     private int matchedQsnPsn;
 
     private InterstitialAd mInterstitialAd;
-    private static final String TAG = "QuestionsActivity";
-
     private RewardedAd rewardedAd;
-
     private LinearLayout freeHints,hints;
+
+
+
 
 
 
@@ -107,12 +125,57 @@ public class QuestionsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         loadLangValue();
 
-        /*MobileAds.initialize(this, initializationStatus -> {
-        });*/
-        //loadsAds();
-        loadAdsNew();
+        // Log the Mobile Ads SDK version.
+        Log.d(TAG, "Google Mobile Ads SDK Version: " + MobileAds.getVersion());
+
+        googleMobileAdsConsentManager = GoogleMobileAdsConsentManager.getInstance(getApplicationContext());
+
+        googleMobileAdsConsentManager.gatherConsent(
+                this,
+                consentError -> {
+                    if (consentError != null) {
+                        // Consent not obtained in current session.
+                        Log.w(
+                                TAG,
+                                String.format("%s: %s", consentError.getErrorCode(), consentError.getMessage()));
+                    }
+                    //startGame();
+
+                    if (googleMobileAdsConsentManager.canRequestAds()) {
+                        initializeMobileAdsSdk();
+                    }
+
+                    if (googleMobileAdsConsentManager.isPrivacyOptionsRequired()) {
+                        // Regenerate the options menu to include a privacy setting.
+                        invalidateOptionsMenu();
+                    }
+                });
+
+        // This sample attempts to load ads using consent obtained in the previous session.
+        if (googleMobileAdsConsentManager.canRequestAds()) {
+            initializeMobileAdsSdk();
+        }
+
+        // ads portion added
+        new Thread(
+                () -> {
+                    // Initialize the Google Mobile Ads SDK on a background thread.
+                    MobileAds.initialize(this, initializationStatus -> {});
+                    // Load an ad on the main thread.
+                    runOnUiThread(
+                            () -> {
+                                if (rewardedAd != null && !isLoading && googleMobileAdsConsentManager.canRequestAds()) {
+                                    loadRewardedAd();
+                                }
+                            });
+                })
+                .start();
+
+
+        loadRewardedAd();
+        //loadAdsNew();
         //createAndLoadRewardedAd();
-        createAndLoadRewardedAdNew();
+        //createAndLoadRewardedAdNew();
 
 
         questions = findViewById(R.id.tv_question);
@@ -554,43 +617,6 @@ public class QuestionsActivity extends AppCompatActivity {
         });
     }
 
-    /*private void createAndLoadRewardedAd() {
-        if (rewardedAd == null || !rewardedAd.isLoaded()) {
-            rewardedAd = new RewardedAd(this, getString(R.string.adMob_rewardedId));
-            rewardedAd.loadAd(
-                    new AdRequest.Builder().build(), new RewardedAdLoadCallback() {
-
-                        @Override
-                        public void onRewardedAdFailedToLoad(int errorCode) {
-                            // Ad failed to load.
-                            createAndLoadRewardedAd();
-                        }
-                    });
-        }
-
-    } */
-
-
-    private void createAndLoadRewardedAdNew() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-        RewardedAd.load(this, adsData.rewardedAdId,
-                adRequest, new RewardedAdLoadCallback() {
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        // Handle the error.
-                        Log.d(TAG, loadAdError.toString());
-                        rewardedAd = null;
-                        createAndLoadRewardedAdNew();
-                    }
-                    @Override
-                    public void onAdLoaded(@NonNull RewardedAd ad) {
-                        rewardedAd = ad;
-                        Log.d(TAG, "Ad was loaded.");
-                        showRewardedVideoCallBackNew();
-                    }
-                });
-    }
-
 
     private void addCoins(int coins) {
         int sum = Integer.parseInt(points.getText().toString());
@@ -599,103 +625,7 @@ public class QuestionsActivity extends AppCompatActivity {
 
     }
 
-    /*private void showRewardedVideo() {
-        if (rewardedAd.isLoaded()) {
-            RewardedAdCallback adCallback = new RewardedAdCallback() {
-                @Override
-                public void onRewardedAdOpened() {
-                    // Ad opened.
-                    Toast.makeText(QuestionsActivity.this, "onRewardedAdOpened", Toast.LENGTH_SHORT).show();
-                }
 
-                @Override
-                public void onRewardedAdClosed() {
-                    // Ad closed.
-                    // Preload the next video ad.
-                    QuestionsActivity.this.createAndLoadRewardedAd();
-
-                }
-
-                @Override
-                public void onUserEarnedReward(RewardItem rewardItem) {
-                    // User earned reward.
-                    addCoins(rewardItem.getAmount());
-
-                }
-
-                @Override
-                public void onRewardedAdFailedToShow(int errorCode) {
-                    // Ad failed to display
-                    QuestionsActivity.this.createAndLoadRewardedAd();
-                }
-            };
-            rewardedAd.show(this, adCallback);
-        } else {
-            Toast.makeText(QuestionsActivity.this,getString(R.string.no_ads_available),Toast.LENGTH_LONG).show();
-        }
-
-
-    } */
-
-    private void showRewardedVideoCallBackNew(){
-        rewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-            @Override
-            public void onAdClicked() {
-                // Called when a click is recorded for an ad.
-                Log.d(TAG, "Ad was clicked.");
-            }
-
-            @Override
-            public void onAdDismissedFullScreenContent() {
-                // Called when ad is dismissed.
-                // Set the ad reference to null so you don't show the ad a second time.
-                Log.d(TAG, "Ad dismissed fullscreen content.");
-                rewardedAd = null;
-            }
-
-            @Override
-            public void onAdFailedToShowFullScreenContent(AdError adError) {
-                // Called when ad fails to show.
-                Log.e(TAG, "Ad failed to show fullscreen content.");
-                rewardedAd = null;
-                createAndLoadRewardedAdNew();
-            }
-
-            @Override
-            public void onAdImpression() {
-                // Called when an impression is recorded for an ad.
-                Log.d(TAG, "Ad recorded an impression.");
-            }
-
-            @Override
-            public void onAdShowedFullScreenContent() {
-                // Called when ad is shown.
-                Log.d(TAG, "Ad showed fullscreen content.");
-                createAndLoadRewardedAdNew();
-            }
-        });
-
-    }
-
-    private void showRewardedAdNew(){
-        if (rewardedAd != null) {
-            Activity activityContext = QuestionsActivity.this;
-            rewardedAd.show(activityContext, new OnUserEarnedRewardListener() {
-                @Override
-                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-                    // Handle the reward.
-                    Log.d(TAG, "The user earned the reward.");
-                    int rewardAmount = rewardItem.getAmount();
-                    String rewardType = rewardItem.getType();
-                    addCoins(rewardAmount);
-                    showRewardedVideoCallBackNew();
-                }
-            });
-        } else {
-            Log.d(TAG, "The rewarded ad wasn't ready yet.");
-        }
-
-    }
 
     private void savePoints(){
         SharedPreferences sPPoints = getSharedPreferences(Points_DATA,Context.MODE_PRIVATE);
@@ -722,11 +652,13 @@ public class QuestionsActivity extends AppCompatActivity {
 
         earnVideo = earnDialog.findViewById(R.id.earnVideoBtn);
         earnVideo.setOnClickListener(view -> {
-            //showRewardedVideo();
-            showRewardedAdNew();
-            earnDialog.dismiss();
+            showRewardedVideo();
+            //showRewardedAdNew();
+            //earnDialog.dismiss();
         });
     }
+
+
 
     private void loadLangValueData(){
         SharedPreferences getSavedLang = getSharedPreferences("GolMal", Activity.MODE_PRIVATE);
@@ -758,5 +690,130 @@ public class QuestionsActivity extends AppCompatActivity {
     }
 
 
+    public void loadAd() {
+        // Use the test ad unit ID to load an ad.
+        RewardedInterstitialAd.load(QuestionsActivity.this, "ca-app-pub-3940256099942544/5354046379",
+        new AdRequest.Builder().build(),  new RewardedInterstitialAdLoadCallback() {
+            @Override
+            public void onAdLoaded(RewardedInterstitialAd ad) {
+                Log.d(TAG, "Ad was loaded.");
+                rewardedInterstitialAd = ad;
+            }
+            @Override
+            public void onAdFailedToLoad(LoadAdError loadAdError) {
+                Log.d(TAG, loadAdError.toString());
+                rewardedInterstitialAd = null;
+            }
+        });
+    }
+
+    private void loadRewardedAd() {
+        if (rewardedAd == null) {
+            isLoading = true;
+            AdRequest adRequest = new AdRequest.Builder().build();
+            RewardedAd.load(
+                    this,
+                    AD_UNIT_ID,
+                    adRequest,
+                    new RewardedAdLoadCallback() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            // Handle the error.
+                            Log.d(TAG, loadAdError.getMessage());
+                            rewardedAd = null;
+                            QuestionsActivity.this.isLoading = false;
+                            Toast.makeText(QuestionsActivity.this, "onAdFailedToLoad", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                            QuestionsActivity.this.rewardedAd = rewardedAd;
+                            Log.d(TAG, "onAdLoaded");
+                            QuestionsActivity.this.isLoading = false;
+                            Toast.makeText(QuestionsActivity.this, "onAdLoaded", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+
+    private void showRewardedVideo() {
+        if (rewardedAd == null) {
+            Log.d("TAG", "The rewarded ad wasn't ready yet.");
+            return;
+        }
+        //showVideoButton.setVisibility(View.INVISIBLE);
+
+        rewardedAd.setFullScreenContentCallback(
+                new FullScreenContentCallback() {
+                    @Override
+                    public void onAdShowedFullScreenContent() {
+                        // Called when ad is shown.
+                        Log.d(TAG, "onAdShowedFullScreenContent");
+                        Toast.makeText(QuestionsActivity.this, "onAdShowedFullScreenContent", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+
+                    @Override
+                    public void onAdFailedToShowFullScreenContent(AdError adError) {
+                        // Called when ad fails to show.
+                        Log.d(TAG, "onAdFailedToShowFullScreenContent");
+                        // Don't forget to set the ad reference to null so you
+                        // don't show the ad a second time.
+                        rewardedAd = null;
+                        Toast.makeText(
+                                        QuestionsActivity.this, "onAdFailedToShowFullScreenContent", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        // Called when ad is dismissed.
+                        // Don't forget to set the ad reference to null so you
+                        // don't show the ad a second time.
+                        rewardedAd = null;
+                        Log.d(TAG, "onAdDismissedFullScreenContent");
+                        Toast.makeText(QuestionsActivity.this, "onAdDismissedFullScreenContent", Toast.LENGTH_SHORT)
+                                .show();
+                        if (googleMobileAdsConsentManager.canRequestAds()) {
+                            // Preload the next rewarded ad.
+                            QuestionsActivity.this.loadRewardedAd();
+                        }
+                    }
+                });
+        Activity activityContext = QuestionsActivity.this;
+        rewardedAd.show(
+                activityContext,
+                new OnUserEarnedRewardListener() {
+                    @Override
+                    public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                        // Handle the reward.
+                        Log.d("TAG", "The user earned the reward.");
+                        addCoins(count);
+                    }
+                });
+    }
+
+
+    private void initializeMobileAdsSdk() {
+        if (isMobileAdsInitializeCalled.getAndSet(true)) {
+            return;
+        }
+
+        // Set your test devices.
+        MobileAds.setRequestConfiguration(
+                new RequestConfiguration.Builder()
+                        .setTestDeviceIds(Collections.singletonList(TEST_DEVICE_HASHED_ID))
+                        .build());
+
+        new Thread(
+                () -> {
+                    // Initialize the Google Mobile Ads SDK on a background thread.
+                    MobileAds.initialize(this, initializationStatus -> {});
+
+                    // Load an ad on the main thread.
+                    runOnUiThread(this::loadRewardedAd);
+                })
+                .start();
+    }
 
 }
