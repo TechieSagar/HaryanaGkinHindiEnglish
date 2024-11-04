@@ -104,6 +104,7 @@ public class QuestionsActivity extends AppCompatActivity {
     private ImageView reportUs;
     private Gson gson;
     private int matchedQsnPsn;
+    Dialog earnDialog;
 
     private InterstitialAd mInterstitialAd;
     private RewardedAd rewardedAd;
@@ -172,7 +173,7 @@ public class QuestionsActivity extends AppCompatActivity {
                 .start();
 
 
-        loadRewardedAd();
+        //loadRewardedAd();
         //loadAdsNew();
         //createAndLoadRewardedAd();
         //createAndLoadRewardedAdNew();
@@ -643,7 +644,6 @@ public class QuestionsActivity extends AppCompatActivity {
     }
 
     private void earnVideoPoints(){
-        final Dialog earnDialog;
         LinearLayout earnVideo;
         earnDialog = new Dialog(this);
         earnDialog.setContentView(R.layout.earn_video);
@@ -713,7 +713,7 @@ public class QuestionsActivity extends AppCompatActivity {
             AdRequest adRequest = new AdRequest.Builder().build();
             RewardedAd.load(
                     this,
-                    AD_UNIT_ID,
+                    getString(R.string.adMob_rewardedId),
                     adRequest,
                     new RewardedAdLoadCallback() {
                         @Override
@@ -774,6 +774,9 @@ public class QuestionsActivity extends AppCompatActivity {
                         Log.d(TAG, "onAdDismissedFullScreenContent");
                         Toast.makeText(QuestionsActivity.this, "onAdDismissedFullScreenContent", Toast.LENGTH_SHORT)
                                 .show();
+
+                        earnDialog.dismiss();
+                        // Load the next ad.
                         if (googleMobileAdsConsentManager.canRequestAds()) {
                             // Preload the next rewarded ad.
                             QuestionsActivity.this.loadRewardedAd();
@@ -802,7 +805,7 @@ public class QuestionsActivity extends AppCompatActivity {
         // Set your test devices.
         MobileAds.setRequestConfiguration(
                 new RequestConfiguration.Builder()
-                        .setTestDeviceIds(Collections.singletonList(TEST_DEVICE_HASHED_ID))
+                        //.setTestDeviceIds(Collections.singletonList(TEST_DEVICE_HASHED_ID))
                         .build());
 
         new Thread(

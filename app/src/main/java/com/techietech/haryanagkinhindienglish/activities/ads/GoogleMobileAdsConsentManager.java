@@ -60,8 +60,8 @@ public class GoogleMobileAdsConsentManager {
     // For testing purposes, you can force a DebugGeography of EEA or NOT_EEA.
     ConsentDebugSettings debugSettings =
         new ConsentDebugSettings.Builder(activity)
-            .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
-            .addTestDeviceHashedId(QuestionsActivity.TEST_DEVICE_HASHED_ID)
+            //.setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
+            //.addTestDeviceHashedId(QuestionsActivity.TEST_DEVICE_HASHED_ID)
             .build();
 
     ConsentRequestParameters params =
